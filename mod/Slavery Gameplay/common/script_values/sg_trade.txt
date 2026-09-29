@@ -1,0 +1,50 @@
+﻿# State scope: use Pop totals rather than a possibly stale population cache.
+sg_trade_population = {
+	value = 0
+	every_scope_pop = { add = total_size }
+}
+# Controller country scope. max is an upper bound; min is a lower bound in script math.
+sg_trade_base = {
+	value = var:sg_trade_demand
+	multiply = 0.1
+	add = 100
+	add = { value = var:sg_trade_arable max = 200 }
+}
+sg_trade_cap = {
+	value = var:sg_trade_population
+	multiply = 0.01
+	min = 1000
+}
+sg_trade_budget = {
+	value = sg_trade_base
+	multiply = var:sg_trade_factor
+	max = sg_trade_cap
+	min = 0
+	floor = yes
+}
+sg_trade_allocation = {
+	value = var:sg_trade_remaining
+	max = var:sg_trade_available
+	min = 0
+	floor = yes
+}
+
+# State scope, same population-sum pattern as P03.
+sg_trade_slave_population = {
+	value = 0
+	every_scope_pop = { limit = { is_pop_type = slaves } add = total_size }
+}
+sg_trade_share_room = {
+ value = var:sg_trade_population
+ if = { limit = { scope:sg_trade_buyer = { is_incorporated = yes } }
+  multiply = 33
+  subtract = { value = var:sg_trade_buyer_slaves multiply = 100 }
+  divide = 67
+ }
+ else = {
+  multiply = 75
+  subtract = { value = var:sg_trade_buyer_slaves multiply = 100 }
+  divide = 25
+ }
+ floor = yes min = 0
+}

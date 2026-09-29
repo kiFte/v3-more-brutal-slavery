@@ -1,0 +1,1 @@
+﻿sg_native_trade_block = { state_slave_import_mult = -100 }

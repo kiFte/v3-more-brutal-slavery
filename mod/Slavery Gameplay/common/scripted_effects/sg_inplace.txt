@@ -1,0 +1,235 @@
+﻿# Internal, synchronous isolation. No population is moved to a third state.
+sg_ip_choose_markers = {
+ set_variable = { name = sg_ip_marker_count value = 0 }
+  if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:ibadi total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:ibadi total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:ibadi = { save_scope_as = sg_ip_a } }
+ else = { rel:ibadi = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:sikh total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:sikh total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:sikh = { save_scope_as = sg_ip_a } }
+ else = { rel:sikh = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:jewish total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:jewish total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:jewish = { save_scope_as = sg_ip_a } }
+ else = { rel:jewish = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:oriental_orthodox total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:oriental_orthodox total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:oriental_orthodox = { save_scope_as = sg_ip_a } }
+ else = { rel:oriental_orthodox = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:shiite total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:shiite total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:shiite = { save_scope_as = sg_ip_a } }
+ else = { rel:shiite = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:theravada total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:theravada total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:theravada = { save_scope_as = sg_ip_a } }
+ else = { rel:theravada = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:gelugpa total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:gelugpa total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:gelugpa = { save_scope_as = sg_ip_a } }
+ else = { rel:gelugpa = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:animist total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:animist total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:animist = { save_scope_as = sg_ip_a } }
+ else = { rel:animist = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:orthodox total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:orthodox total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:orthodox = { save_scope_as = sg_ip_a } }
+ else = { rel:orthodox = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:protestant total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:protestant total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:protestant = { save_scope_as = sg_ip_a } }
+ else = { rel:protestant = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:sunni total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:sunni total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:sunni = { save_scope_as = sg_ip_a } }
+ else = { rel:sunni = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:hindu total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:hindu total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:hindu = { save_scope_as = sg_ip_a } }
+ else = { rel:hindu = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:catholic total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:catholic total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:catholic = { save_scope_as = sg_ip_a } }
+ else = { rel:catholic = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:mahayana total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:mahayana total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:mahayana = { save_scope_as = sg_ip_a } }
+ else = { rel:mahayana = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:confucian total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:confucian total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:confucian = { save_scope_as = sg_ip_a } }
+ else = { rel:confucian = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:atheist total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:atheist total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:atheist = { save_scope_as = sg_ip_a } }
+ else = { rel:atheist = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+ if = { limit = { var:sg_ip_marker_count < var:sg_ip_markers_needed
+ NOT = { scope:sg_ip_state = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:shinto total_size > 0 } } }
+ OR = { var:sg_ip_check_other = 0 NOT = { scope:sg_ip_other = { any_scope_pop = { culture = scope:sg_ip_culture religion = rel:shinto total_size > 0 } } } }
+ }
+ if = { limit = { var:sg_ip_marker_count = 0 } rel:shinto = { save_scope_as = sg_ip_a } }
+ else = { rel:shinto = { save_scope_as = sg_ip_b } }
+ change_variable = { name = sg_ip_marker_count add = 1 }
+ }
+
+}
+sg_ip_apply_type = {
+ change_poptype = pop_type:slaves
+}
+sg_ip_restore_a = {
+ scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 }
+ change_pop_religion = { target = scope:sg_ip_religion value = 1 }
+ } }
+}
+sg_ip_restore_b = {
+ scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_b total_size > 0 }
+ change_pop_religion = { target = scope:sg_ip_religion value = 1 }
+ } }
+}
+sg_ip_accept_b = {
+ set_variable = { name = sg_ip_wf_b value = scope:sg_ip_state.sg_ip_b_workforce }
+ scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_b total_size > 0 }
+ sg_ip_apply_type = yes
+ } }
+ change_variable = { name = sg_ip_processed add = var:sg_ip_size_b }
+ change_variable = { name = sg_ip_processed_workforce add = var:sg_ip_wf_b }
+ change_variable = { name = sg_ip_left subtract = var:sg_ip_size_b }
+ # A class change can replace or merge the selected Pop; traverse again.
+ sg_ip_restore_b = yes
+}
+sg_ip_convert = {
+ save_scope_as = sg_ip_controller
+ remove_variable = sg_ip_failed
+ set_variable = { name = sg_ip_processed value = 0 }
+ set_variable = { name = sg_ip_processed_workforce value = 0 }
+ set_variable = { name = sg_ip_steps value = 0 }
+ set_variable = { name = sg_ip_left value = var:sg_ip_requested }
+ set_variable = { name = sg_ip_selected_size value = scope:sg_ip_selected.total_size }
+ # Employment potential is not permission for local conversion or liberation.
+ # The policy caller supplies the law-specific quota and state cap.
+ if = { limit = { var:sg_ip_requested > 0 NOT = { var:sg_ip_requested > var:sg_ip_selected_size } scope:sg_ip_state = { owner = { sg_slavery_law = yes } } }
+  if = { limit = { var:sg_ip_requested = var:sg_ip_selected_size }
+   set_variable = { name = sg_ip_processed value = var:sg_ip_selected_size }
+   set_variable = { name = sg_ip_processed_workforce value = scope:sg_ip_selected.workforce }
+   scope:sg_ip_selected = { sg_ip_apply_type = yes }
+   set_variable = { name = sg_ip_left value = 0 }
+  }
+  else = {
+   set_variable = { name = sg_ip_markers_needed value = 2 }
+   set_variable = { name = sg_ip_check_other value = 0 }
+   sg_ip_choose_markers = yes
+   if = { limit = { var:sg_ip_marker_count = 2 }
+    set_variable = { name = sg_ip_tenth value = { value = var:sg_ip_selected_size multiply = 0.1 floor = yes } }
+    if = { limit = { var:sg_ip_selected_size > 100000 NOT = { var:sg_ip_requested > var:sg_ip_tenth } }
+     scope:sg_ip_selected = { change_pop_religion = { target = scope:sg_ip_a value = 0.1 } }
+    }
+    else = { scope:sg_ip_selected = { change_pop_religion = { target = scope:sg_ip_a value = 1 } } }
+    set_variable = { name = sg_ip_size_a value = scope:sg_ip_state.sg_ip_a_size }
+    # Accept or discard large halves, then select the exact tail at <=100000.
+    # Never subdivide down to tiny unselected groups with zero workforce.
+    while = { limit = { var:sg_ip_size_a > 100000 var:sg_ip_left > 0 var:sg_ip_steps < 64 NOT = { has_variable = sg_ip_failed } }
+     scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 }
+      change_pop_religion = { target = scope:sg_ip_b value = 0.5 }
+     } }
+     set_variable = { name = sg_ip_size_b value = scope:sg_ip_state.sg_ip_b_size }
+     if = { limit = { var:sg_ip_size_b > 0 }
+      if = { limit = { NOT = { var:sg_ip_size_b > var:sg_ip_left } }
+       sg_ip_accept_b = yes
+      }
+      else = {
+       sg_ip_restore_a = yes
+       scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_b total_size > 0 }
+        change_pop_religion = { target = scope:sg_ip_a value = 1 }
+       } }
+      }
+     }
+     else = { set_variable = sg_ip_failed }
+     change_variable = { name = sg_ip_steps add = 1 }
+     set_variable = { name = sg_ip_size_a value = scope:sg_ip_state.sg_ip_a_size }
+    }
+    if = { limit = { var:sg_ip_left > 0 NOT = { has_variable = sg_ip_failed } var:sg_ip_size_a > 0 NOT = { var:sg_ip_size_a > 100000 } NOT = { var:sg_ip_left > var:sg_ip_size_a } }
+     set_variable = { name = sg_ip_ratio value = { value = var:sg_ip_left multiply = 100000 divide = var:sg_ip_size_a ceiling = yes divide = 100000 } }
+     scope:sg_ip_state = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 }
+      change_pop_religion = { target = scope:sg_ip_b value = scope:sg_ip_controller.var:sg_ip_ratio }
+     } }
+     set_variable = { name = sg_ip_size_b value = scope:sg_ip_state.sg_ip_b_size }
+     if = { limit = { var:sg_ip_size_b = var:sg_ip_left } sg_ip_accept_b = yes }
+     else = { set_variable = sg_ip_failed }
+     change_variable = { name = sg_ip_steps add = 1 }
+    }
+    sg_ip_restore_a = yes
+    sg_ip_restore_b = yes
+    # Separate checks: a residue is a failure even when the budget is exhausted.
+    if = { limit = { OR = { var:sg_ip_left > 0 scope:sg_ip_state.sg_ip_a_size > 0 scope:sg_ip_state.sg_ip_b_size > 0 } } set_variable = sg_ip_failed }
+   }
+   else = { set_variable = sg_ip_failed }
+  }
+ }
+ else = { set_variable = sg_ip_failed }
+}

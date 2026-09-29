@@ -1,0 +1,268 @@
+﻿sg_trade_pool_clear = {
+ every_in_list = { list = sg_trade_decentral remove_from_list = sg_trade_decentral }
+ every_in_list = { list = sg_trade_unrecognized remove_from_list = sg_trade_unrecognized }
+ every_in_list = { list = sg_trade_colonial remove_from_list = sg_trade_colonial }
+ every_in_list = { list = sg_trade_recognized remove_from_list = sg_trade_recognized }
+}
+sg_trade_pool_build = {
+ sg_trade_pool_clear = yes
+ every_state = { limit = { owner = { is_country_type = decentralized } sg_trade_source_eligible = yes }
+  add_to_temporary_list = sg_trade_decentral
+ }
+ every_state = { limit = { owner = { is_country_type = unrecognized } sg_trade_source_eligible = yes }
+  add_to_temporary_list = sg_trade_unrecognized
+ }
+ every_state = { limit = { owner = { OR = { is_country_type = colonial is_country_type = company } } sg_trade_source_eligible = yes }
+  add_to_temporary_list = sg_trade_colonial
+ }
+ every_state = { limit = { owner = { is_country_type = recognized } sg_trade_source_eligible = yes }
+  add_to_temporary_list = sg_trade_recognized
+ }
+
+ set_variable = sg_trade_pool_ready
+}
+sg_trade_refresh_buyer = {
+ set_variable = { name = sg_trade_population value = scope:sg_trade_buyer.sg_population }
+ set_variable = { name = sg_trade_buyer_slaves value = scope:sg_trade_buyer.sg_slaves }
+}
+sg_trade_calculate = {
+ remove_variable = sg_trade_capture_failed
+
+
+	set_variable = { name = sg_trade_budget value = sg_trade_budget }
+	set_variable = { name = sg_trade_remaining value = var:sg_trade_budget }
+	set_variable = { name = sg_trade_spent value = 0 }
+
+}
+sg_trade_reserve = {
+	set_variable = { name = sg_trade_amount value = { value = sg_trade_allocation max = sg_trade_share_room } }
+	change_variable = { name = sg_trade_remaining subtract = var:sg_trade_amount }
+	change_variable = { name = sg_trade_spent add = var:sg_trade_amount }
+
+}
+sg_trade_take_source = {
+	if = {
+		limit = {
+			var:sg_trade_remaining > 0
+ sg_trade_share_room > 0
+			scope:sg_trade_source = {
+				NOT = { owner = scope:sg_trade_controller }
+				owner = { sg_seller_eligible = yes }
+			}
+		}
+		scope:sg_trade_source = {
+			every_scope_pop = {
+				limit = { is_pop_type = slaves total_size > 0 }
+				# Recheck inside the loop in case its list was constructed before the first move.
+				if = {
+					limit = { scope:sg_trade_controller.var:sg_trade_remaining > 0
+ scope:sg_trade_controller.sg_trade_share_room > 0 }
+					save_scope_as = sg_trade_selected
+
+					scope:sg_trade_controller = {
+						set_variable = { name = sg_trade_available value = scope:sg_trade_selected.total_size }
+						sg_trade_reserve = yes
+					}
+					# Reserve first, then independently verify actual Pop deltas; this log is not proof of success.
+					move_partial_pop = { state = scope:sg_trade_buyer population = scope:sg_trade_controller.var:sg_trade_amount }
+ scope:sg_trade_controller = { sg_trade_refresh_buyer = yes }
+
+				}
+			}
+		}
+	}
+
+}
+sg_trade_capture_row = {
+ save_scope_as = sg_ip_controller
+ remove_variable = sg_ip_failed
+ set_variable = { name = sg_trade_available value = scope:sg_trade_selected.total_size }
+ set_variable = { name = sg_trade_amount value = { value = sg_trade_allocation max = sg_trade_share_room } }
+ if = { limit = { var:sg_trade_amount > 0 scope:sg_trade_buyer = { is_slave_state = yes } }
+  scope:sg_trade_selected = {
+   culture = { save_scope_as = sg_trade_culture save_scope_as = sg_ip_culture }
+   religion = { save_scope_as = sg_trade_religion save_scope_as = sg_ip_religion }
+  }
+  scope:sg_trade_source = { save_scope_as = sg_ip_state }
+  scope:sg_trade_buyer = { save_scope_as = sg_ip_other }
+  set_variable = { name = sg_ip_check_other value = 1 }
+  set_variable = { name = sg_ip_markers_needed value = 1 }
+  sg_ip_choose_markers = yes
+  if = { limit = { var:sg_ip_marker_count = 1 }
+   set_variable = { name = sg_trade_capture_before_source_p value = scope:sg_trade_source.sg_population }
+   set_variable = { name = sg_trade_capture_before_source_s value = scope:sg_trade_source.sg_slaves }
+   set_variable = { name = sg_trade_capture_before_buyer_p value = scope:sg_trade_buyer.sg_population }
+   set_variable = { name = sg_trade_capture_before_buyer_s value = scope:sg_trade_buyer.sg_slaves }
+   scope:sg_trade_selected = { change_pop_religion = { target = scope:sg_ip_a value = 1 } }
+   scope:sg_trade_source = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 }
+    move_partial_pop = { state = scope:sg_trade_buyer population = scope:sg_trade_controller.var:sg_trade_amount }
+   } }
+   set_variable = { name = sg_trade_capture_moved value = scope:sg_trade_buyer.sg_ip_a_size }
+   if = { limit = { var:sg_trade_capture_moved = var:sg_trade_amount }
+    scope:sg_trade_buyer = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 } change_poptype = pop_type:slaves } }
+   }
+   else = {
+    scope:sg_trade_buyer = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 } move_pop = scope:sg_trade_source } }
+    set_variable = sg_trade_capture_failed
+   }
+   sg_ip_restore_a = yes
+   scope:sg_trade_buyer = { every_scope_pop = { limit = { culture = scope:sg_ip_culture religion = scope:sg_ip_a total_size > 0 }
+    change_pop_religion = { target = scope:sg_ip_religion value = 1 }
+   } }
+   sg_trade_refresh_buyer = yes
+   set_variable = { name = sg_trade_capture_source_loss value = { value = var:sg_trade_capture_before_source_p subtract = scope:sg_trade_source.sg_population } }
+   set_variable = { name = sg_trade_capture_source_slave_delta value = { value = scope:sg_trade_source.sg_slaves subtract = var:sg_trade_capture_before_source_s } }
+   set_variable = { name = sg_trade_capture_buyer_gain value = { value = scope:sg_trade_buyer.sg_population subtract = var:sg_trade_capture_before_buyer_p } }
+   set_variable = { name = sg_trade_capture_buyer_slave_gain value = { value = scope:sg_trade_buyer.sg_slaves subtract = var:sg_trade_capture_before_buyer_s } }
+   set_variable = { name = sg_trade_capture_residue value = { value = scope:sg_trade_source.sg_ip_a_size add = scope:sg_trade_buyer.sg_ip_a_size } }
+   if = { limit = { NOT = { has_variable = sg_trade_capture_failed }
+    var:sg_trade_capture_source_loss = var:sg_trade_amount var:sg_trade_capture_source_slave_delta = 0
+    var:sg_trade_capture_buyer_gain = var:sg_trade_amount var:sg_trade_capture_buyer_slave_gain = var:sg_trade_amount var:sg_trade_capture_residue = 0
+   }
+    change_variable = { name = sg_trade_remaining subtract = var:sg_trade_capture_moved }
+    change_variable = { name = sg_trade_spent add = var:sg_trade_capture_moved }
+   }
+   else = { set_variable = sg_trade_capture_failed debug_log = "SG_TRADE CAPTURE_ABORT|reason=inplace_amount_or_residue" }
+
+  }
+  else = { set_variable = sg_trade_capture_failed debug_log = "SG_TRADE CAPTURE_ABORT|reason=no_empty_marker" }
+ }
+}
+sg_trade_capture_source = {
+ if = { limit = {
+  var:sg_trade_remaining > 0 sg_trade_share_room > 0
+  NOT = { has_variable = sg_trade_capture_failed }
+  scope:sg_trade_source = { owner = { is_country_type = decentralized } NOT = { owner = scope:sg_trade_controller } }
+ }
+  scope:sg_trade_source = { ordered_scope_pop = {
+   limit = { NOT = { is_pop_type = slaves } total_size > 0 }
+   order_by = sg_local_inverse_size
+   if = { limit = {
+    NOT = { is_pop_type = slaves } total_size > 0
+    scope:sg_trade_controller = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 NOT = { has_variable = sg_trade_capture_failed } }
+   }
+    save_scope_as = sg_trade_selected
+    scope:sg_trade_controller = { sg_trade_capture_row = yes }
+   }
+  } }
+ }
+}
+sg_trade_demand_all = {
+ scope:sg_trade_controller = {
+  set_variable = { name = sg_trade_demand_total value = 0 }
+
+
+
+
+ }
+ every_scope_building = {
+  limit = { sg_slave_building = yes }
+  save_scope_as = sg_trade_demand_building
+  scope:sg_trade_controller = {
+   set_variable = { name = sg_trade_type_capacity value = scope:sg_trade_demand_building.modifier:building_employment_laborers_add }
+   set_variable = { name = sg_trade_slave_workers_type value = 0 }
+  }
+  if = { limit = { OR = { is_building_group = bg_subsistence_agriculture is_building_group = bg_subsistence_ranching } }
+   scope:sg_trade_controller = { set_variable = { name = sg_trade_type_capacity value = scope:sg_trade_demand_building.modifier:building_employment_peasants_add } }
+  }
+
+  if = { limit = { scope:sg_trade_controller = { var:sg_trade_type_capacity > 0 var:sg_trade_buyer_slaves > 0 } }
+  scope:sg_trade_buyer = {
+   every_scope_pop = {
+    limit = { is_pop_type = slaves is_employed = yes workplace = scope:sg_trade_demand_building }
+    save_scope_as = sg_trade_demand_pop
+    scope:sg_trade_controller = { change_variable = { name = sg_trade_slave_workers_type add = scope:sg_trade_demand_pop.workforce } }
+   }
+  }
+  }
+  scope:sg_trade_controller = {
+   set_variable = { name = sg_trade_demand_type value = { value = var:sg_trade_type_capacity subtract = var:sg_trade_slave_workers_type min = 0 } }
+   change_variable = { name = sg_trade_demand_total add = var:sg_trade_demand_type }
+
+
+  }
+ }
+ scope:sg_trade_controller = { set_variable = { name = sg_trade_demand value = var:sg_trade_demand_total } }
+}
+sg_trade_supply = {
+ if = { limit = { NOT = { has_variable = sg_trade_pool_ready } } sg_trade_pool_build = yes }
+ if = { limit = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 }
+  every_in_list = { list = sg_trade_decentral
+   limit = { sg_trade_source_eligible = yes }
+   save_scope_as = sg_trade_source
+   scope:sg_trade_controller = { sg_trade_take_source = yes }
+  }
+ }
+ if = { limit = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 }
+  every_in_list = { list = sg_trade_unrecognized
+   limit = { sg_trade_source_eligible = yes }
+   save_scope_as = sg_trade_source
+   scope:sg_trade_controller = { sg_trade_take_source = yes }
+  }
+ }
+ if = { limit = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 }
+  every_in_list = { list = sg_trade_decentral
+   limit = { sg_trade_source_eligible = yes }
+   save_scope_as = sg_trade_source
+   scope:sg_trade_controller = { sg_trade_capture_source = yes }
+  }
+ }
+ if = { limit = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 }
+  every_in_list = { list = sg_trade_colonial
+   limit = { sg_trade_source_eligible = yes }
+   save_scope_as = sg_trade_source
+   scope:sg_trade_controller = { sg_trade_take_source = yes }
+  }
+ }
+ if = { limit = { var:sg_trade_remaining > 0 sg_trade_share_room > 0 }
+  every_in_list = { list = sg_trade_recognized
+   limit = { sg_trade_source_eligible = yes }
+   save_scope_as = sg_trade_source
+   scope:sg_trade_controller = { sg_trade_take_source = yes }
+  }
+ }
+}
+sg_trade_state = {
+ save_scope_as = sg_trade_buyer
+ add_modifier = { name = sg_native_trade_block days = 40 }
+ owner = {
+  save_scope_as = sg_trade_controller
+  sg_trade_refresh_buyer = yes
+  set_variable = { name = sg_trade_arable value = scope:sg_trade_buyer.arable_land }
+  set_variable = { name = sg_trade_factor value = 1 }
+  if = { limit = { sg_trade_share_room > 0 }
+   scope:sg_trade_buyer = { sg_trade_demand_all = yes }
+   sg_trade_calculate = yes
+   if = { limit = { var:sg_trade_demand > 0 }
+    sg_trade_supply = yes
+   }
+  }
+  else = {
+   remove_variable = sg_trade_capture_failed
+   set_variable = { name = sg_trade_demand value = 0 }
+   set_variable = { name = sg_trade_budget value = 0 }
+   set_variable = { name = sg_trade_remaining value = 0 }
+   set_variable = { name = sg_trade_spent value = 0 }
+  }
+
+ }
+}
+sg_country_start = {
+ if = { limit = { NOT = { has_variable = sg_running } has_law_or_variant = law_type:law_slave_trade }
+  set_variable = sg_running
+  set_variable = { name = sg_week value = 0 }
+  trigger_event = { id = sg_weekly.1 }
+ }
+}
+sg_country_week = {
+ change_variable = { name = sg_week add = 1 }
+ every_scope_state = { sg_local_state = yes }
+ if = { limit = { has_law_or_variant = law_type:law_slave_trade }
+  save_scope_as = sg_trade_controller
+  remove_variable = sg_trade_pool_ready
+  every_scope_state = { sg_trade_state = yes }
+  sg_trade_pool_clear = yes
+  remove_variable = sg_trade_pool_ready
+ }
+
+}

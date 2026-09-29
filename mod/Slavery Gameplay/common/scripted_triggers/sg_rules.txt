@@ -1,0 +1,73 @@
+﻿sg_local_eligible = {
+ total_size > 0
+ NOT = { is_pop_type = slaves }
+ pop_acceptance < acceptance_status_4
+ wealth < 10
+}
+sg_seller_eligible = {
+	OR = {
+		is_country_type = decentralized
+		AND = {
+			is_country_type = unrecognized
+			OR = {
+				has_law_or_variant = law_type:law_debt_slavery
+				sg_colonial_law = yes
+				has_law_or_variant = law_type:law_slave_trade
+				has_law_or_variant = law_type:law_legacy_slavery
+			}
+		}
+		AND = {
+			OR = {
+				is_country_type = recognized
+				is_country_type = colonial
+				is_country_type = company
+			}
+			OR = {
+				has_law_or_variant = law_type:law_debt_slavery
+				sg_colonial_law = yes
+				has_law_or_variant = law_type:law_slave_trade
+			}
+		}
+	}
+}
+sg_slavery_law = {
+ OR = {
+  has_law_or_variant = law_type:law_debt_slavery
+  sg_colonial_law = yes
+  has_law_or_variant = law_type:law_slave_trade
+  has_law_or_variant = law_type:law_legacy_slavery
+ }
+}
+sg_colonial_law = {
+ has_law_or_variant = law_type:law_colonial_slavery
+}
+sg_trade_source_eligible = {
+ NOT = { owner = scope:sg_trade_controller }
+ owner = { sg_seller_eligible = yes }
+ OR = {
+  any_scope_pop = { is_pop_type = slaves total_size > 0 }
+  AND = { owner = { is_country_type = decentralized } any_scope_pop = { NOT = { is_pop_type = slaves } total_size > 0 } }
+ }
+}
+sg_slave_building = {
+ OR = {
+  is_building_group = bg_agriculture
+  is_building_group = bg_staple_crops
+  is_building_group = bg_subsistence_agriculture
+  is_building_group = bg_ranching
+  is_building_group = bg_subsistence_ranching
+  is_building_group = bg_plantations
+  is_building_group = bg_mining
+  is_building_group = bg_logging
+  is_building_group = bg_rubber
+  is_building_group = bg_trade
+  is_building_group = bg_financial_districts
+  is_building_group = bg_manor_houses
+  is_building_group = bg_company_headquarter
+  is_building_group = bg_company_regional_headquarter
+  is_building_group = bg_owner_buildings
+  is_building_group = bg_construction
+  is_building_group = bg_naval_logistics_center
+  is_building_group = bg_army_logistics_center
+ }
+}

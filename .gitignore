@@ -1,0 +1,12 @@
+/*
+!/.gitignore
+!/.gitattributes
+!/README.md
+!/mod/
+/mod/*
+!/mod/Slavery Gameplay/
+*.log
+*.v3
+*.zip
+*.sqlite
+*.db

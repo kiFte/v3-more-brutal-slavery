@@ -1,0 +1,165 @@
+﻿sg_local_measure = {
+ save_scope_as = sg_local_measured_state
+ set_variable = { name = sg_local_population value = 0 }
+ set_variable = { name = sg_local_workforce value = 0 }
+ set_variable = { name = sg_local_slaves value = 0 }
+ set_variable = { name = sg_local_slave_workforce value = 0 }
+ set_variable = { name = sg_local_cohort value = 0 }
+ set_variable = { name = sg_local_cohort_workforce value = 0 }
+ set_variable = { name = sg_local_cohort_slaves value = 0 }
+ set_variable = { name = sg_local_cohort_slave_workforce value = 0 }
+ every_scope_pop = {
+  save_scope_as = sg_local_measured_pop
+   scope:sg_local_measured_state = {
+    change_variable = { name = sg_local_population add = scope:sg_local_measured_pop.total_size }
+    change_variable = { name = sg_local_workforce add = scope:sg_local_measured_pop.workforce }
+   }
+  if = { limit = { is_pop_type = slaves }
+   scope:sg_local_measured_state = {
+    change_variable = { name = sg_local_slaves add = scope:sg_local_measured_pop.total_size }
+    change_variable = { name = sg_local_slave_workforce add = scope:sg_local_measured_pop.workforce }
+   }
+  }
+  if = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion }
+   scope:sg_local_measured_state = {
+    change_variable = { name = sg_local_cohort add = scope:sg_local_measured_pop.total_size }
+    change_variable = { name = sg_local_cohort_workforce add = scope:sg_local_measured_pop.workforce }
+   }
+  }
+  if = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion is_pop_type = slaves }
+   scope:sg_local_measured_state = {
+    change_variable = { name = sg_local_cohort_slaves add = scope:sg_local_measured_pop.total_size }
+    change_variable = { name = sg_local_cohort_slave_workforce add = scope:sg_local_measured_pop.workforce }
+   }
+  }
+ }
+}
+sg_local_stash_selected = {
+ scope:sg_local_controller = {
+  set_variable = { name = sg_local_selected value = scope:sg_local_selected_pop.total_size }
+  set_variable = { name = sg_local_wealth value = 0 }
+ }
+  if = { limit = { wealth = 0 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 0 } } }
+  if = { limit = { wealth = 1 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 1 } } }
+  if = { limit = { wealth = 2 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 2 } } }
+  if = { limit = { wealth = 3 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 3 } } }
+  if = { limit = { wealth = 4 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 4 } } }
+  if = { limit = { wealth = 5 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 5 } } }
+  if = { limit = { wealth = 6 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 6 } } }
+  if = { limit = { wealth = 7 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 7 } } }
+  if = { limit = { wealth = 8 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 8 } } }
+  if = { limit = { wealth = 9 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 9 } } }
+  if = { limit = { wealth = 10 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 10 } } }
+  if = { limit = { wealth = 11 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 11 } } }
+  if = { limit = { wealth = 12 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 12 } } }
+  if = { limit = { wealth = 13 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 13 } } }
+  if = { limit = { wealth = 14 } scope:sg_local_controller = { set_variable = { name = sg_local_wealth value = 14 } } }
+ }
+sg_local_remember_before = {
+ set_variable = { name = sg_local_before_source_population value = scope:sg_local_source.var:sg_local_population }
+ set_variable = { name = sg_local_before_source_workforce value = scope:sg_local_source.var:sg_local_workforce }
+ set_variable = { name = sg_local_before_source_slaves value = scope:sg_local_source.var:sg_local_slaves }
+ set_variable = { name = sg_local_before_source_slave_workforce value = scope:sg_local_source.var:sg_local_slave_workforce }
+ set_variable = { name = sg_local_before_source_cohort value = scope:sg_local_source.var:sg_local_cohort }
+ set_variable = { name = sg_local_before_source_cohort_workforce value = scope:sg_local_source.var:sg_local_cohort_workforce }
+ set_variable = { name = sg_local_before_source_cohort_slaves value = scope:sg_local_source.var:sg_local_cohort_slaves }
+ set_variable = { name = sg_local_before_source_cohort_slave_workforce value = scope:sg_local_source.var:sg_local_cohort_slave_workforce }
+}
+sg_local_confirm = {
+
+ set_variable = { name = sg_local_expected_population value = var:sg_local_before_source_population }
+ set_variable = { name = sg_local_expected_workforce value = var:sg_local_before_source_workforce }
+ set_variable = { name = sg_local_expected_slaves value = var:sg_local_before_source_slaves }
+ change_variable = { name = sg_local_expected_slaves add = var:sg_local_converted }
+ set_variable = { name = sg_local_expected_slave_workforce value = var:sg_local_before_source_slave_workforce }
+ change_variable = { name = sg_local_expected_slave_workforce add = var:sg_local_moved_workforce }
+ set_variable = { name = sg_local_expected_cohort value = var:sg_local_before_source_cohort }
+ set_variable = { name = sg_local_expected_cohort_workforce value = var:sg_local_before_source_cohort_workforce }
+ set_variable = { name = sg_local_expected_cohort_slaves value = var:sg_local_before_source_cohort_slaves }
+ change_variable = { name = sg_local_expected_cohort_slaves add = var:sg_local_converted }
+ set_variable = { name = sg_local_expected_cohort_slave_workforce value = var:sg_local_before_source_cohort_slave_workforce }
+ change_variable = { name = sg_local_expected_cohort_slave_workforce add = var:sg_local_moved_workforce }
+ if = { limit = { var:sg_local_requested >= var:sg_local_moved NOT = { var:sg_local_requested > var:sg_local_moved } var:sg_local_moved >= var:sg_local_converted NOT = { var:sg_local_moved > var:sg_local_converted } NOT = { var:sg_local_converted > var:sg_local_remaining } scope:sg_local_source.var:sg_local_population >= var:sg_local_expected_population NOT = { scope:sg_local_source.var:sg_local_population > var:sg_local_expected_population } scope:sg_local_source.var:sg_local_workforce >= var:sg_local_expected_workforce NOT = { scope:sg_local_source.var:sg_local_workforce > var:sg_local_expected_workforce } scope:sg_local_source.var:sg_local_slaves >= var:sg_local_expected_slaves NOT = { scope:sg_local_source.var:sg_local_slaves > var:sg_local_expected_slaves } scope:sg_local_source.var:sg_local_slave_workforce >= var:sg_local_expected_slave_workforce NOT = { scope:sg_local_source.var:sg_local_slave_workforce > var:sg_local_expected_slave_workforce } scope:sg_local_source.var:sg_local_cohort >= var:sg_local_expected_cohort NOT = { scope:sg_local_source.var:sg_local_cohort > var:sg_local_expected_cohort } scope:sg_local_source.var:sg_local_cohort_workforce >= var:sg_local_expected_cohort_workforce NOT = { scope:sg_local_source.var:sg_local_cohort_workforce > var:sg_local_expected_cohort_workforce } scope:sg_local_source.var:sg_local_cohort_slaves >= var:sg_local_expected_cohort_slaves NOT = { scope:sg_local_source.var:sg_local_cohort_slaves > var:sg_local_expected_cohort_slaves } scope:sg_local_source.var:sg_local_cohort_slave_workforce >= var:sg_local_expected_cohort_slave_workforce NOT = { scope:sg_local_source.var:sg_local_cohort_slave_workforce > var:sg_local_expected_cohort_slave_workforce } }
+  set_variable = { name = sg_local_confirmed value = var:sg_local_converted }
+  change_variable = { name = sg_local_remaining subtract = var:sg_local_confirmed }
+  change_variable = { name = sg_local_spent add = var:sg_local_confirmed }
+ }
+ else = { set_variable = sg_local_failed debug_log = "SG_LOCAL ROW_ABORT|reason=amount_or_return" }
+}
+sg_local_row = {
+ set_variable = { name = sg_local_confirmed value = 0 }
+ set_variable = { name = sg_local_moved value = 0 }
+ set_variable = { name = sg_local_converted value = 0 }
+ scope:sg_local_selected_pop = { sg_local_stash_selected = yes }
+ set_variable = { name = sg_local_requested value = sg_local_enslave_request }
+ if = { limit = { var:sg_local_requested > 0 }
+  scope:sg_local_selected_pop = {
+   save_scope_as = sg_ip_selected
+   culture = { save_scope_as = sg_local_culture save_scope_as = sg_ip_culture }
+   religion = { save_scope_as = sg_local_religion save_scope_as = sg_ip_religion }
+  }
+  scope:sg_local_source = { save_scope_as = sg_ip_state sg_local_measure = yes }
+  sg_local_remember_before = yes
+  set_variable = { name = sg_ip_requested value = var:sg_local_requested }
+  sg_ip_convert = yes
+  set_variable = { name = sg_local_moved value = var:sg_ip_processed }
+  set_variable = { name = sg_local_converted value = var:sg_ip_processed }
+  set_variable = { name = sg_local_moved_workforce value = var:sg_ip_processed_workforce }
+  scope:sg_local_source = { sg_local_measure = yes }
+  if = { limit = { NOT = { has_variable = sg_ip_failed } } sg_local_confirm = yes }
+  else = { set_variable = sg_local_failed
+   scope:sg_local_source = { debug_log = "SG_LOCAL ROW_ABORT|reason=inplace_isolation|sid=[THIS.GetState.GetID]|requested=[THIS.GetState.GetOwner.MakeScope.Var('sg_local_requested').GetValue|0]|selected=[THIS.GetState.GetOwner.MakeScope.Var('sg_ip_selected_size').GetValue|0]|markers=[THIS.GetState.GetOwner.MakeScope.Var('sg_ip_marker_count').GetValue|0]" }
+  }
+
+ }
+}
+sg_local_pass = {
+ scope:sg_local_source = {
+  sg_policy = yes
+  # Seed the request cache from this pass; each real transaction refreshes it.
+  set_variable = { name = sg_local_population value = var:sg_policy_pop }
+  set_variable = { name = sg_local_slaves value = var:sg_policy_slaves }
+ }
+ set_variable = { name = sg_local_population value = scope:sg_local_source.var:sg_policy_pop }
+ set_variable = { name = sg_local_slaves value = scope:sg_local_source.var:sg_policy_slaves }
+ set_variable = { name = sg_local_base value = scope:sg_local_source.var:sg_policy_base }
+ set_variable = { name = sg_local_cap value = scope:sg_local_source.var:sg_policy_cap }
+ set_variable = { name = sg_local_budget value = scope:sg_local_source.var:sg_policy_budget }
+ set_variable = { name = sg_local_remaining value = var:sg_local_budget }
+ set_variable = { name = sg_local_spent value = 0 }
+
+ if = { limit = { var:sg_local_remaining > 0 sg_local_headroom > 0 }
+ scope:sg_local_source = { ordered_scope_pop = {
+  limit = { sg_local_eligible = yes }
+  order_by = sg_local_inverse_size
+  if = { limit = {
+   sg_local_eligible = yes
+   scope:sg_local_controller.var:sg_local_remaining > 0
+   scope:sg_local_controller = { sg_local_headroom > 0 }
+   NOT = { scope:sg_local_controller = { has_variable = sg_local_failed } }
+  }
+   save_scope_as = sg_local_selected_pop
+   scope:sg_local_controller = { sg_local_row = yes }
+  }
+ } }
+ }
+
+}
+sg_local_state = {
+ save_scope_as = sg_local_source
+ owner = {
+  if = { limit = { has_law_or_variant = law_type:law_slave_trade }
+   save_scope_as = sg_local_controller
+   remove_variable = sg_local_failed
+   sg_local_pass = yes
+  }
+ }
+}
+sg_policy = {
+ set_variable = { name = sg_policy_pop value = sg_population }
+ set_variable = { name = sg_policy_slaves value = sg_slaves }
+ set_variable = { name = sg_policy_base value = 10 }
+ if = { limit = { is_incorporated = yes } set_variable = { name = sg_policy_cap value = 33 } }
+ else = { set_variable = { name = sg_policy_cap value = 75 } }
+ set_variable = { name = sg_policy_budget value = { value = var:sg_policy_pop multiply = 0.005 floor = yes } }
+}

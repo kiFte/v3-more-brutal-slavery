@@ -1,0 +1,18 @@
+{
+  "name": "More Brutal Slavery | 更残酷的奴隶制",
+  "id": "",
+  "version": "0.1.0",
+  "supported_game_version": "1.13.*",
+  "short_description": "Vanilla slavery mechanics are too mild. I have made them harsher to better reflect the brutality of slavery. 原版机制过于温和，我将它改变得更加残酷，以更加贴合残酷的现实",
+  "tags": [
+    "Gameplay",
+    "Pops",
+    "Economy and Buildings",
+    "Trade",
+    "1.13"
+  ],
+  "relationships": [],
+  "game_custom_data": {
+    "multiplayer_synchronized": true
+  }
+}

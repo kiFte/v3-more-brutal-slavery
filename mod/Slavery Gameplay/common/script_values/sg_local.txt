@@ -1,0 +1,18 @@
+﻿sg_local_population = { value = 0 every_scope_pop = { add = total_size } }
+sg_local_workforce = { value = 0 every_scope_pop = { add = workforce } }
+sg_local_slaves = { value = 0 every_scope_pop = { limit = { is_pop_type = slaves } add = total_size } }
+sg_local_slave_workforce = { value = 0 every_scope_pop = { limit = { is_pop_type = slaves } add = workforce } }
+sg_local_cohort = { value = 0 every_scope_pop = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion } add = total_size } }
+sg_local_cohort_workforce = { value = 0 every_scope_pop = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion } add = workforce } }
+sg_local_cohort_slaves = { value = 0 every_scope_pop = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion is_pop_type = slaves } add = total_size } }
+sg_local_cohort_slave_workforce = { value = 0 every_scope_pop = { limit = { culture = scope:sg_local_culture religion = scope:sg_local_religion is_pop_type = slaves } add = workforce } }
+sg_local_inverse_size = { value = 0 subtract = total_size }
+sg_local_quota = {
+ value = var:sg_local_selected
+ multiply = { value = var:sg_local_base subtract = var:sg_local_wealth } divide = 100 floor = yes min = 0
+}
+sg_local_headroom = { value = scope:sg_local_source.var:sg_local_population multiply = var:sg_local_cap divide = 100 floor = yes subtract = scope:sg_local_source.var:sg_local_slaves min = 0 }
+sg_local_enslave_request = { value = sg_local_quota max = var:sg_local_remaining max = sg_local_headroom min = 0 }
+sg_population = { value = 0 every_scope_pop = { add = total_size } }
+sg_slaves = { value = 0 every_scope_pop = { limit = { is_pop_type = slaves } add = total_size } }
+sg_local_budget = { value = sg_population multiply = 0.005 floor = yes }

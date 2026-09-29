@@ -1,0 +1,15 @@
+﻿namespace = sg_weekly
+sg_weekly.1 = {
+ type = country_event hidden = yes
+ immediate = {
+  if = { limit = { has_variable = sg_running has_law_or_variant = law_type:law_slave_trade }
+   sg_country_week = yes
+   trigger_event = { id = sg_weekly.1 days = 7 }
+  }
+  else = { remove_variable = sg_running }
+ }
+}
+sg_weekly.2 = {
+ type = country_event hidden = yes
+ immediate = { sg_country_start = yes }
+}

@@ -1,0 +1,6 @@
+﻿on_game_started_after_lobby = { on_actions = { sg_initialize } }
+sg_initialize = { effect = { every_country = { sg_country_start = yes } } }
+on_monthly_pulse_country = { on_actions = { sg_resume } }
+sg_resume = { effect = { sg_country_start = yes } }
+on_law_activated = { on_actions = { sg_law_changed } }
+sg_law_changed = { effect = { owner = { trigger_event = { id = sg_weekly.2 days = 1 } } } }
